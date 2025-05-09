@@ -13,6 +13,14 @@ public class MovieDAO {
         this.connection = connection;
     }
 
+    public MovieDAO() throws SQLException {
+        this.connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/movierental",
+                "root",
+                "Ryder$abale148"
+        );
+    }
+
     // Create
     public boolean addMovie(Movie movie) throws SQLException {
         String sql = "INSERT INTO Movies (Title, Genre, ReleaseDate, Rating, AvailabilityStatus) VALUES (?, ?, ?, ?, ?)";

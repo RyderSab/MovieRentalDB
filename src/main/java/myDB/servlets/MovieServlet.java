@@ -14,8 +14,12 @@ public class MovieServlet extends HttpServlet {
     private MovieDAO movieDAO;
 
     @Override
-    public void init() {
-        movieDAO = new MovieDAO();
+    public void init() throws ServletException {
+        try {
+            this.movieDAO = new MovieDAO();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

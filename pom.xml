@@ -38,6 +38,6 @@
     </dependencies>
 
     <build>
-        <finalName>MovieRentalSystem</finalName>
+        <finalName>MovieRentalDB</finalName>
     </build>
 </project>

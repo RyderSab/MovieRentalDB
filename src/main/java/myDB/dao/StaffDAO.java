@@ -14,6 +14,20 @@ public class StaffDAO {
         this.connection = connection;
     }
 
+    public StaffDAO() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL JDBC Driver not found", e);
+        }
+
+        this.connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/movierentaldb",
+                "root",
+                "Ryder$abale148"
+        );
+    }
+
     // Create
     public boolean addStaff(Staff staff) throws SQLException {
         String sql = "INSERT INTO Staff (FirstName, LastName, Email, Role) VALUES (?, ?, ?, ?)";

@@ -13,6 +13,20 @@ public class MemberDAO {
         this.connection = connection;
     }
 
+    public MemberDAO() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL JDBC Driver not found", e);
+        }
+
+        this.connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/movierentaldb",
+                "root",
+                "Ryder$abale148"
+        );
+    }
+
     // Create
     public boolean addMember(Member member) throws SQLException {
         String sql = "INSERT INTO Members (FirstName, LastName, Email, Phone, MembershipDate) VALUES (?, ?, ?, ?, ?)";

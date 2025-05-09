@@ -14,6 +14,20 @@ public class RentalDAO {
         this.connection = connection;
     }
 
+    public RentalDAO() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL JDBC Driver not found", e);
+        }
+
+        this.connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/movierentaldb",
+                "root",
+                "Ryder$abale148"
+        );
+    }
+
     // Create
     public boolean addRental(Rental rental) throws SQLException {
         String sql = "INSERT INTO Rentals (MemberID, MovieID, RentalDate, ReturnDate, Status) VALUES (?, ?, ?, ?, ?)";

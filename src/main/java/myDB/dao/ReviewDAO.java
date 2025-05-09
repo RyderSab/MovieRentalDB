@@ -13,6 +13,20 @@ public class ReviewDAO {
         this.connection = connection;
     }
 
+    public ReviewDAO() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL JDBC Driver not found", e);
+        }
+
+        this.connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/movierentaldb",
+                "root",
+                "Ryder$abale148"
+        );
+    }
+
     // Create
     public boolean addReview(Review review) throws SQLException {
         String sql = "INSERT INTO Reviews (MemberID, MovieID, ReviewDate, Rating, ReviewText) VALUES (?, ?, ?, ?, ?)";

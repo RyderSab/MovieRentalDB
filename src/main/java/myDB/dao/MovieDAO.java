@@ -14,8 +14,14 @@ public class MovieDAO {
     }
 
     public MovieDAO() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL JDBC Driver not found", e);
+        }
+
         this.connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/movierental",
+                "jdbc:mysql://localhost:3306/movierentaldb",
                 "root",
                 "Ryder$abale148"
         );

@@ -113,12 +113,10 @@ public class MovieDAO {
         return movie;
     }
 
-    public boolean updateAvailability(int movieId, boolean isAvailable) throws SQLException {
-        String sql = "UPDATE Movies SET AvailabilityStatus = ? WHERE MovieID = ?";
-
+    public boolean toggleAvailability(int movieId) throws SQLException {
+        String sql = "UPDATE Movies SET AvailabilityStatus = NOT AvailabilityStatus WHERE MovieID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setBoolean(1, isAvailable);
-            stmt.setInt(2, movieId);
+            stmt.setInt(1, movieId);
             return stmt.executeUpdate() > 0;
         }
     }

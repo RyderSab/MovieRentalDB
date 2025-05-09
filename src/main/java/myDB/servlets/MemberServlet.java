@@ -33,7 +33,10 @@ public class MemberServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
-            if ("edit".equals(action)) {
+            if ("new".equals(action)) {
+                request.getRequestDispatcher("/WEB-INF/views/editMember.jsp").forward(request, response);
+                return;
+            } else if ("edit".equals(action)) {
                 showEditForm(request, response);
             } else {
                 listMembers(request, response);
@@ -100,6 +103,9 @@ public class MemberServlet extends HttpServlet {
         member.setLastName(request.getParameter("lastName"));
         member.setEmail(request.getParameter("email"));
         member.setPhone(request.getParameter("phone"));
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date membershipDate = df.parse(request.getParameter("membershipDate"));
+        member.setMembershipDate(membershipDate);
 
         memberDAO.updateMember(member);
     }

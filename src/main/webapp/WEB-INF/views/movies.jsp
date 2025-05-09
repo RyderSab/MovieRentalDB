@@ -12,6 +12,13 @@
 <head>
     <title>Movies</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <div class="d-flex justify-content-between mb-4">
+        <h1>Movie List</h1>
+        <div>
+            <a href="members" class="btn btn-primary me-2">View Members</a>
+        </div>
+    </div>
 </head>
 <body>
 <div class="container mt-5">
@@ -69,7 +76,7 @@
                 <td>${movie.availabilityStatus ? 'Yes' : 'No'}</td>
                 <td>
                     <a href="movies?action=edit&id=${movie.movieID}" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="movies" method="post" style="display:inline;">
+                    <form action="movies" method="post" onsubmit="return confirm('Delete this movie?'); "style="display:inline;">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="movieId" value="${movie.movieID}">
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>

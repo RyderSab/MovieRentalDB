@@ -8,7 +8,9 @@ import myDB.model.Movie;
 import myDB.model.Rental;
 import myDB.model.RentalStatus;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class RentalService {
     private RentalDAO rentalDAO;
@@ -41,7 +43,9 @@ public class RentalService {
         Rental rental = new Rental();
         rental.setMemberID(memberId);
         rental.setMovieID(movieId);
-        rental.setRentalDate(new Date());
+        LocalDate localDate = LocalDate.now();
+        java.sql.Date rentalDate = (java.sql.Date) java.sql.Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        rental.setRentalDate(rentalDate);
         rental.setStatus(RentalStatus.Rented);
 
         // Update movie availability
@@ -59,7 +63,10 @@ public class RentalService {
         }
 
         // Update rental
-        rental.setReturnDate(new Date());
+        LocalDate localDate = LocalDate.now();
+        java.sql.Date returnDate = (java.sql.Date) Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        rental.setRentalDate(returnDate);
+
         rental.setStatus(RentalStatus.Returned);
         rentalDAO.updateRental(rental);
 

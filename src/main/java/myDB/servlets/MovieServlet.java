@@ -30,8 +30,8 @@ public class MovieServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
         try {
+            String action = request.getParameter("action");
             if ("edit".equals(action)) {
                 // 1. Get movie ID
                 int movieId = Integer.parseInt(request.getParameter("id"));

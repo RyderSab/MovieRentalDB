@@ -128,4 +128,29 @@ public class ReviewDAO {
         review.setReviewText(resultSet.getString("ReviewText"));
         return review;
     }
+
+    public List<Review> getAllReviews() throws SQLException {
+        List<Review> reviews = new ArrayList<>();
+        String sql = "SELECT r.*, m.Title, mem.FirstName, mem.LastName " +
+                "FROM Reviews r " +
+                "JOIN Movies m ON r.MovieID = m.MovieID " +
+                "JOIN Members mem ON r.MemberID = mem.MemberID";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Review review = new Review();
+                review.setReviewID(rs.getInt("ReviewID"));
+                review.setMovieID(rs.getInt("MovieID"));
+                review.setMemberID(rs.getInt("MemberID"));
+                review.setReviewDate(rs.getDate("ReviewDate"));
+                review.setRating(rs.getFloat("Rating"));
+                review.setReviewText(rs.getString("ReviewText"));
+
+                reviews.add(review);
+            }
+        }
+        return reviews;
+    }
 }

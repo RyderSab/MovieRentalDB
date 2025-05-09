@@ -112,4 +112,35 @@ public class MovieDAO {
         movie.setAvailabilityStatus(resultSet.getBoolean("AvailabilityStatus"));
         return movie;
     }
+
+    public boolean updateAvailability(int movieId, boolean isAvailable) throws SQLException {
+        String sql = "UPDATE Movies SET AvailabilityStatus = ? WHERE MovieID = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBoolean(1, isAvailable);
+            stmt.setInt(2, movieId);
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    public List<Movie> getAvailableMovies() throws SQLException {
+        List<Movie> movies = new ArrayList<>();
+        String sql = "SELECT * FROM Movies WHERE AvailabilityStatus = TRUE";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Movie movie = new Movie();
+                movie.setMovieID(rs.getInt("MovieID"));
+                movie.setTitle(rs.getString("Title"));
+                movie.setGenre(rs.getString("Genre"));
+                movie.setReleaseDate(rs.getDate("ReleaseDate"));
+                movie.setRating(rs.getFloat("Rating"));
+                movie.setAvailabilityStatus(rs.getBoolean("AvailabilityStatus"));
+                movies.add(movie);
+            }
+        }
+        return movies;
+    }
 }

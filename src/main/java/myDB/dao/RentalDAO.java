@@ -149,4 +149,19 @@ public class RentalDAO {
         rental.setStatus(RentalStatus.valueOf(resultSet.getString("Status")));
         return rental;
     }
+
+    public boolean updateRentalStatus(int rentalId, String status) throws SQLException {
+        String sql = "UPDATE Rentals SET Status = ?, ReturnDate = ? WHERE RentalID = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setDate(2, "Returned".equals(status) ? new java.sql.Date(System.currentTimeMillis()) : null);
+            stmt.setInt(3, rentalId);
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    public List<Rental> getAllRentals() {
+        return null;
+    }
 }

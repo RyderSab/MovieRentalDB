@@ -31,7 +31,7 @@
                 <input type="date" name="releaseDate" class="form-control" required>
             </div>
             <div class="col-md-2">
-                <input type="number" step="0.1" name="rating" class="form-control" placeholder="Rating" min="0" max="10">
+                <input type="number" step="0.1" name="rating" class="form-control" placeholder="Rating" min="0" max="10" required>
             </div>
             <div class="col-md-2">
                 <div class="form-check">

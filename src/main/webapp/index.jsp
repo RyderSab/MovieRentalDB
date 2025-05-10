@@ -5,7 +5,8 @@
   Time: 4:10 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>\
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +23,7 @@
 
     <!-- Optional: Add more links -->
     <div class="mt-3">
-        <a href="WEB-INF/views/login.jsp" class="btn btn-secondary">Staff Login</a>
+        <a href="login" class="btn btn-secondary">Staff Login</a>
     </div>
 </div>
 </body>

@@ -20,7 +20,9 @@
     <h1>Member List</h1>
     <div>
       <a href="movies" class="btn btn-primary me-2">View Movies</a>
+      <a href="staff" class="btn btn-primary me-2">View Staff</a>
       <a href="members?action=new" class="btn btn-success">Add New Member</a>
+      <a href="rentals" class="btn btn-success">View Rentals</a>
     </div>
   </div>
 

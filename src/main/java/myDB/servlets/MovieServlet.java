@@ -66,10 +66,8 @@ public class MovieServlet extends HttpServlet {
                 handleDeleteMovie(request);
             } else if ("update".equals(action)) {
                 handleUpdateMovie(request);
-            } else if ("toggle".equals(action)) {
-                int movieId = Integer.parseInt(request.getParameter("movieId"));
-                movieDAO.toggleAvailability(movieId);
             }
+
             response.sendRedirect("movies");
         } catch (Exception e) {
             throw new ServletException("Operation failed: " + e.getMessage(), e);
@@ -86,6 +84,7 @@ public class MovieServlet extends HttpServlet {
         Date releaseDate = df.parse(request.getParameter("releaseDate"));
         movie.setReleaseDate(releaseDate);
         movie.setRating(Float.parseFloat(request.getParameter("rating")));
+        movie.setAvailabilityStatus(request.getParameter("availability") != null);
 
         movieDAO.addMovie(movie);
     }

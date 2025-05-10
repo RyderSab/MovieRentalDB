@@ -123,4 +123,28 @@ public class StaffDAO {
         staff.setRole(StaffRole.valueOf(resultSet.getString("Role")));
         return staff;
     }
+
+    public Staff authenticate(String email, String staffId) throws SQLException {
+        String sql = "SELECT * FROM staff WHERE email = ? AND StaffID = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, email);
+            statement.setString(2, staffId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    StaffRole staffRole = StaffRole.valueOf(role);
+                    return new Staff(
+                        rs.getString("FirstName"),
+                        rs.getString("LastName"),
+                        rs.getString("Email"),
+                        staffRole
+                    );
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -1,14 +1,13 @@
 package myDB.servlets;
 
 import myDB.dao.MemberDAO;
-import myDB.model.Member;
+import myDB.model.*;
 import myDB.dao.RentalDAO;
-import myDB.model.Rental;
 import myDB.dao.MovieDAO;
-import myDB.model.Movie;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -16,7 +15,7 @@ import java.text.FieldPosition;
 import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.util.List;
-import java.sql.Date;
+import java.util.Date;
 import java.text.*;
 import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
@@ -49,9 +48,9 @@ public class RentalServlet extends HttpServlet {
                 showNewForm(request, response);
             } else if ("return".equals(action)) {
                 showReturnForm(request, response);
-            } else {
-                listRentals(request, response);
             }
+                listRentals(request, response);
+
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -63,10 +62,12 @@ public class RentalServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
-            if ("rent".equals(action)) {
+            if ("add".equals(action)) {
                 rentMovie(request);
             } else if ("return".equals(action)) {
                 returnMovie(request);
+            } else if ("delete".equals(action)) {
+                handleDeleteRental(request);
             }
             response.sendRedirect("rentals");
         } catch (Exception e) {
@@ -76,8 +77,14 @@ public class RentalServlet extends HttpServlet {
 
     private void listRentals(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
+
         List<Rental> rentals = rentalDAO.getAllRentals();
+        List<Movie> movies = movieDAO.getAvailableMovies();
+        List<Member> members = memberDAO.getAllMembers();
+
         request.setAttribute("rentals", rentals);
+        request.setAttribute("movies", movies);
+        request.setAttribute("members", members);
         request.getRequestDispatcher("/WEB-INF/views/rentals.jsp").forward(request, response);
     }
 
@@ -89,13 +96,15 @@ public class RentalServlet extends HttpServlet {
     }
 
     private void rentMovie(HttpServletRequest request)
-            throws SQLException {
+            throws SQLException, ParseException {
         Rental rental = new Rental();
         rental.setMovieID(Integer.parseInt(request.getParameter("movieId")));
         rental.setMemberID(Integer.parseInt(request.getParameter("memberId")));
-        LocalDate localDate = LocalDate.now();
-        Date rentalDate = (Date) Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date rentalDate = df.parse(request.getParameter("rentalDate"));
         rental.setRentalDate(rentalDate);
+        rental.setStatus(RentalStatus.valueOf("Rented"));
 
         rentalDAO.addRental(rental);
         movieDAO.updateAvailability(rental.getMovieID(), false);
@@ -118,18 +127,15 @@ public class RentalServlet extends HttpServlet {
         Movie movie = movieDAO.getMovieById(rental.getMovieID());
         Member member = memberDAO.getMemberById(rental.getMemberID());
 
-        // Calculate potential late fee (example: $1 per day late)
-        long daysLate = ChronoUnit.DAYS.between(
-                rental.getRentalDate().toLocalDate(),
-                LocalDate.now()
-        ) - 7; // 7-day rental period
-
-        double lateFee = daysLate > 0 ? daysLate * 1.0 : 0;
-
         request.setAttribute("rental", rental);
         request.setAttribute("movie", movie);
         request.setAttribute("member", member);
-        request.setAttribute("lateFee", lateFee);
         request.getRequestDispatcher("/WEB-INF/views/returnRental.jsp").forward(request, response);
+    }
+
+    private void handleDeleteRental(HttpServletRequest request)
+            throws SQLException, NumberFormatException {
+        int rentalID = Integer.parseInt(request.getParameter("rentalId"));
+        rentalDAO.deleteRental(rentalID);
     }
 }

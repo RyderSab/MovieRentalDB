@@ -3,6 +3,8 @@ package myDB.servlets;
 import myDB.dao.MemberDAO;
 import myDB.dao.ReviewDAO;
 import myDB.dao.MovieDAO;
+import myDB.model.Member;
+import myDB.model.Movie;
 import myDB.model.Review;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -69,7 +71,15 @@ public class ReviewServlet extends HttpServlet {
     private void listReviews(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         List<Review> reviews = reviewDAO.getAllReviews();
+        List<Movie> movies = movieDAO.getAvailableMovies();
+        List<Member> members = memberDAO.getAllMembers();
+
+        System.out.println("[RentalServlet] Movies loaded: " + movies.size());
+        System.out.println("[RentalServlet] Members loaded: " + members.size());
+
         request.setAttribute("reviews", reviews);
+        request.setAttribute("movies", movies);
+        request.setAttribute("members", members);
         request.getRequestDispatcher("/WEB-INF/views/reviews.jsp").forward(request, response);
     }
 

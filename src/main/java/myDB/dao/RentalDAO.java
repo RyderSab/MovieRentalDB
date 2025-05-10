@@ -1,5 +1,6 @@
 package myDB.dao;
 
+import myDB.model.Member;
 import myDB.model.Rental;
 import myDB.model.RentalStatus;
 
@@ -162,6 +163,16 @@ public class RentalDAO {
     }
 
     public List<Rental> getAllRentals() {
-        return null;
+        List<Rental> rentals = new ArrayList<>();
+        String sql = "SELECT * FROM Rentals";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                rentals.add(extractRentalFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rentals;
     }
 }

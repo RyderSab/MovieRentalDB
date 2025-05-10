@@ -16,7 +16,7 @@
     <div class="d-flex justify-content-between mb-4">
         <h1>Movie List</h1>
         <div>
-            <a href="members" class="btn btn-primary me-2">View Members</a>
+            <a href="reviews" class="btn btn-primary me-2">View Reviews</a>
         </div>
     </div>
 </head>
